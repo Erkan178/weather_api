@@ -1,10 +1,6 @@
-import logging
-
-# Loglama yapılandırması
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s', filename='app.log', filemode='w')
-
 def process_weather_data(data):
     if data:
+        location = data['location']
         forecast_days = data['forecast']['forecastday']
         processed_data = []
         for day in forecast_days:
@@ -12,11 +8,15 @@ def process_weather_data(data):
             day_data = day['day']
             processed_data.append({
                 'date': date,
-                'temperature': day_data['avgtemp_c'],
                 'max_temp': day_data['maxtemp_c'],
                 'min_temp': day_data['mintemp_c'],
+                'temperature': day_data['avgtemp_c'],
+                'condition': day_data['condition']['text'],
                 'humidity': day_data['avghumidity'],
-                'condition': day_data['condition']['text']
+                'latitude': location['lat'],
+                'longitude': location['lon'],
+                'wind_speed': day_data['maxwind_kph'],
+                'last_updated': data['current']['last_updated']
             })
         return processed_data
     else:

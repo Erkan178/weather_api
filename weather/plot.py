@@ -2,34 +2,41 @@ import matplotlib.pyplot as plt
 import logging
 
 # Loglama yapılandırması
-logging.basicConfig(level=logging.ERROR, format='%(asctime)s - %(levelname)s - %(message)s', filename='app.log', filemode='w')
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s', filename='app.log', filemode='w')
 
-def plot_weather(data):
-    dates = [d['date'] for d in data]
-    temperatures = [d['temperature'] for d in data]
-    max_temps = [d['max_temp'] for d in data]
-    min_temps = [d['min_temp'] for d in data]
-    humidities = [d['humidity'] for d in data]
-    conditions = [d['condition'] for d in data]
+def plot_weather(weather_data):
+    # Verileri tabloya dönüştür
+    days = [day['date'] for day in weather_data]
+    max_temps = [day['max_temp'] for day in weather_data]
+    min_temps = [day['min_temp'] for day in weather_data]
+    avg_temps = [day['temperature'] for day in weather_data]
+    conditions = [day['condition'] for day in weather_data]
+    humidities = [day['humidity'] for day in weather_data]
+    latitudes = [day['latitude'] for day in weather_data]
+    longitudes = [day['longitude'] for day in weather_data]
+    wind_speeds = [day['wind_speed'] for day in weather_data]
+    last_updates = [day['last_updated'] for day in weather_data]
 
-    fig, ax1 = plt.subplots()
+    # Tablo verileri
+    table_data = [
+        ["Date", "Max Temp", "Min Temp", "Avg Temp", "Condition", "Humidity", "Latitude", "Longitude", "Wind Speed", "Last Update"],
+        *zip(days, max_temps, min_temps, avg_temps, conditions, humidities, latitudes, longitudes, wind_speeds, last_updates)
+    ]
 
-    ax1.set_xlabel('Tarih')
-    ax1.set_ylabel('Sıcaklık (°C)', color='tab:red')
-    ax1.plot(dates, temperatures, 'r-', label='Ortalama Sıcaklık')
-    ax1.plot(dates, max_temps, 'r--', label='Maksimum Sıcaklık')
-    ax1.plot(dates, min_temps, 'r:', label='Minimum Sıcaklık')
-    ax1.tick_params(axis='y', labelcolor='tab:red')
+    # Tabloyu oluştur
+    fig, ax = plt.subplots(figsize=(14, 6))  # Daha büyük bir figür boyutu ayarlayın
+    ax.axis('tight')
+    ax.axis('off')
 
-    ax2 = ax1.twinx()
-    ax2.set_ylabel('Nem (%)', color='tab:blue')
-    ax2.plot(dates, humidities, 'b-', label='Nem')
-    ax2.tick_params(axis='y', labelcolor='tab:blue')
+    # Tabloyu ekleyin
+    table = ax.table(cellText=table_data, cellLoc='center', loc='center')
+    table.auto_set_font_size(False)
+    table.set_fontsize(10)  # Yazı boyutunu ayarlayın
+    table.scale(1.2, 1.2)  # Tabloyu ölçeklendirin
 
-    for i, txt in enumerate(conditions):
-        ax1.annotate(txt, (dates[i], temperatures[i]), textcoords="offset points", xytext=(0,10), ha='center')
+    # Başlık ekle
+    plt.title('3 Günlük Hava Durumu Verileri', fontsize=14)
 
-    fig.tight_layout()
-    plt.title('3 Günlük Hava Tahmini')
-    fig.legend(loc='upper right')
+    # Tabloyu göster
     plt.show()
+    logging.info("Weather data table plotted")

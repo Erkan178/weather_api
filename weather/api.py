@@ -1,8 +1,4 @@
 import requests
-import logging
-
-# Loglama yapılandırması
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s', filename='app.log', filemode='w')
 
 API_KEY = '0159de0998664cadab751149250402'
 BASE_URL = 'http://api.weatherapi.com/v1/forecast.json'

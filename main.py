@@ -13,7 +13,6 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 def save_weather_data(data, city):
     # Kayıt için dosya adı
     filename = f"{city}_weather.json"
-    # Veriyi JSON formatında kaydet
     with open(filename, 'w', encoding='utf-8') as f:
         json.dump(data, f, ensure_ascii=False, indent=4)
     logging.info(f"Weather data saved for {city} in {filename}")
@@ -28,7 +27,7 @@ def show_weather():
             save_weather_data(data, city)
             plot_weather(weather)
             logging.info(f"Weather data processed and plotted for {city}")
-            messagebox.showinfo("Hava Durumu", "Veriler başarıyla kaydedildi ve grafik gösterildi.")
+            messagebox.showinfo("Hava Durumu", "Veriler başarıyla kaydedildi ve tablo gösterildi.")
         else:
             logging.error("Error processing weather data")
             messagebox.showerror("Hata", "Veriler işlenirken bir hata oluştu.")
@@ -43,7 +42,7 @@ root.title("Hava Durumu Uygulaması")
 city_label = tk.Label(root, text="Şehir ismini girin:")
 city_label.pack()
 
-city_entry = tk.Entry(root)
+city_entry = tk.Entry(root, width=50)  # Genişliği artırdık
 city_entry.pack()
 
 get_weather_button = tk.Button(root, text="Hava Durumunu Göster", command=show_weather)
