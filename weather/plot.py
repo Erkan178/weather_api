@@ -1,4 +1,8 @@
 import matplotlib.pyplot as plt
+import logging
+
+# Loglama yapılandırması
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s', filename='app.log', filemode='w')
 
 def plot_weather(data):
     dates = [d['date'] for d in data]

@@ -1,3 +1,8 @@
+import logging
+
+# Loglama yapılandırması
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s', filename='app.log', filemode='w')
+
 def process_weather_data(data):
     if data:
         forecast_days = data['forecast']['forecastday']

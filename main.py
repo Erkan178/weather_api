@@ -5,6 +5,10 @@ from weather.forecast import process_weather_data
 from weather.plot import plot_weather
 import json
 import os
+import logging
+
+# Loglama yapılandırması
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s', filename='app.log', filemode='w')
 
 def save_weather_data(data, city):
     # Kayıt için dosya adı
@@ -12,19 +16,24 @@ def save_weather_data(data, city):
     # Veriyi JSON formatında kaydet
     with open(filename, 'w', encoding='utf-8') as f:
         json.dump(data, f, ensure_ascii=False, indent=4)
+    logging.info(f"Weather data saved for {city} in {filename}")
 
 def show_weather():
     city = city_entry.get()
+    logging.info(f"Fetching weather data for {city}")
     data = get_weather(city)
     if data:
         weather = process_weather_data(data)
         if weather:
             save_weather_data(data, city)
             plot_weather(weather)
+            logging.info(f"Weather data processed and plotted for {city}")
             messagebox.showinfo("Hava Durumu", "Veriler başarıyla kaydedildi ve grafik gösterildi.")
         else:
+            logging.error("Error processing weather data")
             messagebox.showerror("Hata", "Veriler işlenirken bir hata oluştu.")
     else:
+        logging.error("Error fetching weather data")
         messagebox.showerror("Hata", "Hava durumu verileri alınamadı.")
 
 # GUI kurulum
