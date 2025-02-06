@@ -6,7 +6,7 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 
 def plot_weather(weather_data):
     # Verileri tabloya dönüştür
-    days = [day['date'] for day in weather_data]
+    dates = [day['date'] for day in weather_data]
     max_temps = [day['max_temp'] for day in weather_data]
     min_temps = [day['min_temp'] for day in weather_data]
     avg_temps = [day['temperature'] for day in weather_data]
@@ -20,11 +20,11 @@ def plot_weather(weather_data):
     # Tablo verileri
     table_data = [
         ["Date", "Max Temp", "Min Temp", "Avg Temp", "Condition", "Humidity", "Latitude", "Longitude", "Wind Speed", "Last Update"],
-        *zip(days, max_temps, min_temps, avg_temps, conditions, humidities, latitudes, longitudes, wind_speeds, last_updates)
+        *zip(dates, max_temps, min_temps, avg_temps, conditions, humidities, latitudes, longitudes, wind_speeds, last_updates)
     ]
 
     # Tabloyu oluştur
-    fig, ax = plt.subplots(figsize=(14, 6))  # Daha büyük bir figür boyutu ayarlayın
+    fig, ax = plt.subplots(figsize=(16, 8))  # Daha büyük bir figür boyutu ayarlayın
     ax.axis('tight')
     ax.axis('off')
 
@@ -35,7 +35,7 @@ def plot_weather(weather_data):
     table.scale(1.2, 1.2)  # Tabloyu ölçeklendirin
 
     # Başlık ekle
-    plt.title('3 Günlük Hava Durumu Verileri', fontsize=14)
+    plt.title('3 Günlük Hava Durumu Verileri ve Anlık Durum', fontsize=14)
 
     # Tabloyu göster
     plt.show()
