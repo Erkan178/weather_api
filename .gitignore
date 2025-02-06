@@ -16,3 +16,4 @@ Thumbs.db
 # JSON dosyaları hariç, örnek olarak saklayacağız
 *.json
 !*.weather.json
+!*.weather.json
