@@ -1,0 +1,18 @@
+# Sanal ortam klasörü
+venv/
+
+# Python cache dosyaları
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Çeşitli işletim sistemi dosyaları
+.DS_Store
+Thumbs.db
+
+# Log dosyaları
+*.log
+
+# JSON dosyaları hariç, örnek olarak saklayacağız
+*.json
+!*.weather.json
