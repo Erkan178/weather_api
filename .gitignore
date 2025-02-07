@@ -17,3 +17,10 @@ Thumbs.db
 *.json
 !*.weather.json
 !*.weather.json
+
+# main.spec dosyasını dışarıda bırak
+main.spec
+
+# dist ve build klasörlerini dışarıda bırak
+dist/
+build/
