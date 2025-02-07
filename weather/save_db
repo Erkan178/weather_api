@@ -1,0 +1,47 @@
+import sqlite3
+import unicodedata
+import re
+
+def normalize_city_name(city_name):
+    normalized_name = unicodedata.normalize('NFKD', city_name).encode('ASCII', 'ignore').decode('utf-8')
+    normalized_name = re.sub(r'[^a-zA-Z0-9]', '', normalized_name.lower())
+    return normalized_name
+
+def save_to_db(city, weather_data):
+    conn = sqlite3.connect('weather_data.db')
+    c = conn.cursor()
+
+    table_name = normalize_city_name(city)
+
+    c.execute(f'''
+        CREATE TABLE IF NOT EXISTS {table_name} (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            date TEXT,
+            max_temp REAL,
+            min_temp REAL,
+            avg_temp REAL,
+            condition TEXT,
+            humidity REAL,
+            latitude REAL,
+            longitude REAL,
+            wind_speed REAL,
+            last_updated TEXT,
+            current_temp REAL,
+            current_condition TEXT,
+            current_humidity REAL
+        )
+    ''')
+
+    for day in weather_data:
+        c.execute(f'''
+            INSERT INTO {table_name} (date, max_temp, min_temp, avg_temp, condition, humidity, latitude, longitude, wind_speed, last_updated, current_temp, current_condition, current_humidity)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ''', (
+            day['date'], day['max_temp'], day['min_temp'], day['temperature'], day['condition'],
+            day['humidity'], day['latitude'], day['longitude'], day['wind_speed'],
+            day['last_updated'], day['current_temp'], day['current_condition'], day['current_humidity']
+        ))
+
+    conn.commit()
+    conn.close()
+    print(f"Weather data saved for {city} to the database")
